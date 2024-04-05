@@ -89,6 +89,25 @@ The server will now be running and accessible at http://localhost:3001.
 
 Ensure that both your client and server are running. Join a room using one browser window, then open another window or use a different browser to join the same room and test the video, audio, and chat features.
 
+## 🏗️ Under Construction
+
+[ ] Destroy video or/and screen sharing;
+[ ] Send message using socket.io;
+[ ] Not allow access to /chat without click in Join Now at Home Page;
+[ ] Connect Peer Signal between the connected users;
+[ ] Add code to stop sharing;
+[ ] Create a list of users with peer connection enabled;
+[ ] Improve socket connection using Next API;
+[ ] Probably I have more thing to do but I am tire, it is 1:32 am.... 😴
+
+## 🪲 Bugs
+
+[ ] Mobile version is not a responsive design;
+[ ] The camera is frozen on mobile version;
+[ ] The share screen button is not working on mobile;
+[ ] Chat is not appearing properly on mobile;
+[ ] I will find more bugs... 🙁
+
 ## 🎓 Learning NextJS
 
 To learn more about Next.js, take a look at the following resources:
