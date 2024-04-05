@@ -12,6 +12,17 @@ Chat Video Simple-Peer is a powerful video conferencing tool inspired by Google 
 
 **Demo**: [Click Here! - Remember it is in progress](https://chat-video-simple-peer.vercel.app/)
 
+## 🚧 Screenshots
+
+### Home
+
+![image](https://github.com/robertosilva85/chat-video-simple-peer/assets/20528537/9973e625-afdc-49df-bf4d-4aa6d880cec0)
+
+## Meeting Room (In Progress)
+
+![image](https://github.com/robertosilva85/chat-video-simple-peer/assets/20528537/72b6e1de-2470-4794-8c40-814fe2beedb5)
+
+
 ## 🚀 Features
 
 - **Video Conferencing:** Real-time video streaming, supporting multiple participants.
