@@ -91,22 +91,22 @@ Ensure that both your client and server are running. Join a room using one brows
 
 ## 🏗️ Under Construction
 
-[ ] Destroy video or/and screen sharing;
-[ ] Send message using socket.io;
-[ ] Not allow access to /chat without click in Join Now at Home Page;
-[ ] Connect Peer Signal between the connected users;
-[ ] Add code to stop sharing;
-[ ] Create a list of users with peer connection enabled;
-[ ] Improve socket connection using Next API;
-[ ] Probably I have more thing to do but I am tire, it is 1:32 am.... 😴
+- [ ] Destroy video or/and screen sharing;
+- [ ] Send message using socket.io;
+- [ ] Not allow access to /chat without click in Join Now at Home Page;
+- [ ] Connect Peer Signal between the connected users;
+- [ ] Add code to stop sharing;
+- [ ] Create a list of users with peer connection enabled;
+- [ ] Improve socket connection using Next API;
+- [ ] Probably I have more thing to do but I am tire, it is 1:32 am.... 😴
 
 ## 🪲 Bugs
 
-[ ] Mobile version is not a responsive design;
-[ ] The camera is frozen on mobile version;
-[ ] The share screen button is not working on mobile;
-[ ] Chat is not appearing properly on mobile;
-[ ] I will find more bugs... 🙁
+- [ ] Mobile version is not a responsive design;
+- [ ] The camera is frozen on mobile version;
+- [ ] The share screen button is not working on mobile;
+- [ ] Chat is not appearing properly on mobile;
+- [x] I will find more bugs... 🙁
 
 ## 🎓 Learning NextJS
 
