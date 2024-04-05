@@ -24,6 +24,8 @@ interface ContextProps {
   userAvatarColor: string;
   currentStream: MediaStream | null;
   setCurrentStream: Dispatch<SetStateAction<MediaStream | null>>;
+  currentScreenStream: MediaStream | null;
+  setCurrentScreenStream: Dispatch<SetStateAction<MediaStream | null>>;
   resetAll: () => void;
 }
 
@@ -31,6 +33,7 @@ const defaultProps = {
   isAudioEnabled: false,
   isVideoEnabled: false,
   isChatVisible: false,
+  isSharingScreen: false,
 };
 
 export const ChatContext = createContext<ContextProps>({} as ContextProps);
@@ -51,6 +54,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     null
   );
 
+  const [, setCurrentScreenStream, currentScreenStream] =
+    useStateRef<MediaStream | null>(null);
+
   const userAvatarColor = useMemo(() => randomColor(), []);
 
   const resetAll = () => {
@@ -65,12 +71,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         callers,
         currentStream: currentStream.current,
+        currentScreenStream: currentScreenStream.current,
         name,
         sessionId,
         roomConf,
         userAvatarColor,
         setCallers,
         setCurrentStream,
+        setCurrentScreenStream,
         setName,
         setSessionId,
         setRoomConf,

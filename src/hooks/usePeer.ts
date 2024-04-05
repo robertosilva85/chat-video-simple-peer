@@ -2,8 +2,8 @@ import { PeerInstance } from '@/interfaces/general';
 import { useRef } from 'react';
 import Peer from 'simple-peer';
 
-const constraints = {
-  video: { width: { min: 1280 }, height: { min: 720 } },
+const constraints: MediaStreamConstraints = {
+  video: true,
   audio: true,
 };
 
@@ -14,6 +14,7 @@ interface PeerSignal {
 
 interface Props {
   startMedia: () => Promise<MediaStream>;
+  startShareScreen: () => Promise<MediaStream>;
   stopMedia: () => void;
   startInstancePeer: (socket: any) => void;
   stream: MediaStream | undefined;
@@ -29,6 +30,10 @@ const usePeer = (): Props => {
    */
   const startMedia = async (): Promise<MediaStream> => {
     return navigator.mediaDevices.getUserMedia(constraints);
+  };
+
+  const startShareScreen = async (): Promise<MediaStream> => {
+    return navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
   };
 
   /**
@@ -99,6 +104,7 @@ const usePeer = (): Props => {
 
   return {
     startMedia,
+    startShareScreen,
     stopMedia,
     startInstancePeer,
     stream: streamRef.current,

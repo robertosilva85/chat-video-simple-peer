@@ -4,6 +4,7 @@ export interface RoomProps {
   isAudioEnabled: boolean;
   isVideoEnabled: boolean;
   isChatVisible: boolean;
+  isSharingScreen: boolean;
 }
 
 export interface PeerInstance {

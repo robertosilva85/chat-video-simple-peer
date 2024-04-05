@@ -12,10 +12,14 @@ import usePeer from '@/hooks/usePeer';
 import { MicrophoneIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
   const router = useRouter();
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const [audioVideoError, setAudioVideoError] = useState(false);
 
   const {
     name,
@@ -26,8 +30,6 @@ export default function Home() {
     setCurrentStream,
   } = useChat();
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   const { startMedia } = usePeer();
 
   const { checkAudio, destroy, isSpeaking } = useAudioAnalyze();
@@ -36,9 +38,13 @@ export default function Home() {
 
   useEffect(() => {
     const effect = async () => {
-      const stream = await startMedia();
+      try {
+        const stream = await startMedia();
 
-      setCurrentStream(stream);
+        setCurrentStream(stream);
+      } catch {
+        setAudioVideoError(true);
+      }
     };
 
     effect();
@@ -58,6 +64,17 @@ export default function Home() {
 
   const handleJoinClick = () => {
     router.push('/chat');
+  };
+
+  const handleAllowCameraClick = async () => {
+    try {
+      const stream = await startMedia();
+
+      setCurrentStream(stream);
+      setAudioVideoError(false);
+    } catch {
+      setAudioVideoError(true);
+    }
   };
 
   const buttons: ActionButtonProps[] = [
@@ -98,48 +115,77 @@ export default function Home() {
             }
           )}
         >
-          {!isVideoEnabled && <p className='text-2xl'>Camera is off</p>}
-          <Video
-            isAudioEnabled={false}
-            isVideoEnabled={isVideoEnabled}
-            videoRef={videoRef}
-          />
-          {!!name && isVideoEnabled && (
-            <p className='absolute top-3 left-3 shadow-sm'>{name}</p>
+          {audioVideoError && (
+            <div className='flex flex-col items-center justify-center space-y-4'>
+              <p className='text-xl'>
+                Do you want people to see and hear you in the meeting?
+              </p>
+              <button
+                type='button'
+                className='rounded-md bg-blue-600 text-white hover:bg-blue-700 py-3 px-5 w-fit'
+                onClick={handleAllowCameraClick}
+              >
+                Allow microphone and camera
+              </button>
+            </div>
           )}
-          <div className='absolute bottom-7'>
-            <div className='flex items-center justify-center gap-5'>
-              {buttons.map((button, idx) => (
-                <ActionButton key={idx} {...button} />
-              ))}
-            </div>
-          </div>
-          {isAudioEnabled && (
-            <div className='absolute bottom-5 left-4 rounded-full bg-blue-500 p-2'>
-              <div className='flex space-x-1 justify-center items-center'>
-                <div
-                  className={classNames('h-1.5 w-1.5 bg-white rounded-full ', {
-                    'animate-bounce [animation-delay:-0.3s]': isSpeaking,
-                  })}
-                ></div>
-                <div
-                  className={classNames('h-1.5 w-1.5 bg-white rounded-full ', {
-                    'animate-bounce [animation-delay:-0.15s]': isSpeaking,
-                  })}
-                ></div>
-                <div
-                  className={classNames('h-1.5 w-1.5 bg-white rounded-full ', {
-                    'animate-bounce': isSpeaking,
-                  })}
-                ></div>
+
+          {!audioVideoError && (
+            <>
+              {!isVideoEnabled && <p className='text-2xl'>Camera is off</p>}
+              <Video
+                isAudioEnabled={false}
+                isVideoEnabled={isVideoEnabled}
+                videoRef={videoRef}
+              />
+              {!!name && isVideoEnabled && (
+                <p className='absolute top-3 left-3 shadow-sm'>{name}</p>
+              )}
+              <div className='absolute bottom-7'>
+                <div className='flex items-center justify-center gap-5'>
+                  {buttons.map((button, idx) => (
+                    <ActionButton key={idx} {...button} />
+                  ))}
+                </div>
               </div>
-            </div>
+              {isAudioEnabled && (
+                <div className='absolute bottom-5 left-4 rounded-full bg-blue-500 p-2'>
+                  <div className='flex space-x-1 justify-center items-center'>
+                    <div
+                      className={classNames(
+                        'h-1.5 w-1.5 bg-white rounded-full ',
+                        {
+                          'animate-bounce [animation-delay:-0.3s]': isSpeaking,
+                        }
+                      )}
+                    ></div>
+                    <div
+                      className={classNames(
+                        'h-1.5 w-1.5 bg-white rounded-full ',
+                        {
+                          'animate-bounce [animation-delay:-0.15s]': isSpeaking,
+                        }
+                      )}
+                    ></div>
+                    <div
+                      className={classNames(
+                        'h-1.5 w-1.5 bg-white rounded-full ',
+                        {
+                          'animate-bounce': isSpeaking,
+                        }
+                      )}
+                    ></div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className='text-black flex flex-col justify-center items-center w-[300px]'>
           <h3 className='mb-4 text-center text-2xl'>What&apos;s your name?</h3>
           <input
             type='text'
+            disabled={audioVideoError}
             className='bg-gray-200 p-3 mb-4'
             placeholder='Your name'
             maxLength={20}
@@ -147,7 +193,7 @@ export default function Home() {
             onChange={(e) => setName(e.target.value)}
           />
           <button
-            disabled={!name}
+            disabled={!name || audioVideoError}
             type='button'
             className='rounded-full bg-blue-600 text-white hover:bg-blue-700 py-3 px-5 w-fit disabled:bg-gray-400'
             onClick={handleJoinClick}

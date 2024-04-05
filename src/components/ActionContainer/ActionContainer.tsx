@@ -1,9 +1,11 @@
 'use client';
 
 import { useChat } from '@/context/Context';
+import usePeer from '@/hooks/usePeer';
 import {
   ArrowLeftEndOnRectangleIcon,
   ChatBubbleLeftRightIcon,
+  ComputerDesktopIcon,
   MicrophoneIcon,
   VideoCameraIcon,
 } from '@heroicons/react/24/outline';
@@ -13,9 +15,11 @@ import { ActionButton, Props as ActionButtonProps } from '../ActionButton';
 
 export const ActionContainer = () => {
   const router = useRouter();
-  const { roomConf, setRoomConf, resetAll } = useChat();
+  const { startShareScreen } = usePeer();
+  const { roomConf, setRoomConf, resetAll, setCurrentScreenStream } = useChat();
 
-  const { isAudioEnabled, isChatVisible, isVideoEnabled } = roomConf;
+  const { isAudioEnabled, isChatVisible, isVideoEnabled, isSharingScreen } =
+    roomConf;
 
   const buttons: ActionButtonProps[] = [
     {
@@ -40,6 +44,31 @@ export const ActionContainer = () => {
           ...prev,
           isVideoEnabled: !prev.isVideoEnabled,
         }));
+      },
+    },
+    {
+      enabledColor: 'bg-[#2aa254]',
+      children: (
+        <>
+          <ComputerDesktopIcon className='h-6 w-6 stroke-white' />
+        </>
+      ),
+      off: !isSharingScreen,
+      disabledColor: 'bg-[#3C4043]',
+      onClick: async function () {
+        try {
+          if (!isSharingScreen) {
+            const stream = await startShareScreen();
+            setCurrentScreenStream(stream);
+          }
+
+          setRoomConf((prev) => ({
+            ...prev,
+            isSharingScreen: !prev.isSharingScreen,
+          }));
+        } catch {
+          console.log('Error');
+        }
       },
     },
     {
