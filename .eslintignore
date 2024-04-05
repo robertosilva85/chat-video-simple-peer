@@ -1,0 +1,7 @@
+node_modules
+jest/coverage
+.next
+out
+dist
+.yarn
+src/lib/api-client/dist
