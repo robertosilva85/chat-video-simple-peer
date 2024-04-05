@@ -12,7 +12,7 @@ Chat Video Simple-Peer is a powerful video conferencing tool inspired by Google 
 
 **Demo**: [Click Here! - Remember it is in progress](https://chat-video-simple-peer.vercel.app/)
 
-## 🚧 Screenshots
+## 📷 Screenshots
 
 ### Home
 
