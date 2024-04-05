@@ -7,8 +7,10 @@ import {
 import { Footer } from '@/components/Footer';
 import { Video } from '@/components/Video';
 import { useChat } from '@/context/Context';
+import { useAudioAnalyze } from '@/hooks/useAudioAnalyze';
 import usePeer from '@/hooks/usePeer';
 import { MicrophoneIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
+import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
@@ -28,6 +30,8 @@ export default function Home() {
 
   const { startMedia } = usePeer();
 
+  const { checkAudio, destroy, isSpeaking } = useAudioAnalyze();
+
   const { isAudioEnabled, isVideoEnabled } = roomConf;
 
   useEffect(() => {
@@ -38,13 +42,18 @@ export default function Home() {
     };
 
     effect();
+
+    return () => destroy();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (currentStream && videoRef.current) {
+      checkAudio(currentStream);
       videoRef.current.srcObject = currentStream;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStream]);
 
   const handleJoinClick = () => {
@@ -80,11 +89,18 @@ export default function Home() {
 
   return (
     <main>
-      <div className='p-10 flex h-screen w-sc flex-row items-center justify-center gap-10'>
-        <div className='bg-black w-[740px] h-[420px] rounded-md flex items-center justify-center relative'>
+      <div className='p-10 flex h-screen w-sc lg:flex-row flex-col items-center justify-center gap-10'>
+        <div
+          className={classNames(
+            'w-[740px] h-[420px] rounded-md flex items-center justify-center relative',
+            {
+              'bg-black': !isVideoEnabled,
+            }
+          )}
+        >
           {!isVideoEnabled && <p className='text-2xl'>Camera is off</p>}
           <Video
-            isAudioEnabled={isAudioEnabled}
+            isAudioEnabled={false}
             isVideoEnabled={isVideoEnabled}
             videoRef={videoRef}
           />
@@ -98,6 +114,27 @@ export default function Home() {
               ))}
             </div>
           </div>
+          {isAudioEnabled && (
+            <div className='absolute bottom-5 left-4 rounded-full bg-blue-500 p-2'>
+              <div className='flex space-x-1 justify-center items-center'>
+                <div
+                  className={classNames('h-1.5 w-1.5 bg-white rounded-full ', {
+                    'animate-bounce [animation-delay:-0.3s]': isSpeaking,
+                  })}
+                ></div>
+                <div
+                  className={classNames('h-1.5 w-1.5 bg-white rounded-full ', {
+                    'animate-bounce [animation-delay:-0.15s]': isSpeaking,
+                  })}
+                ></div>
+                <div
+                  className={classNames('h-1.5 w-1.5 bg-white rounded-full ', {
+                    'animate-bounce': isSpeaking,
+                  })}
+                ></div>
+              </div>
+            </div>
+          )}
         </div>
         <div className='text-black flex flex-col justify-center items-center w-[300px]'>
           <h3 className='mb-4 text-center text-2xl'>What&apos;s your name?</h3>
