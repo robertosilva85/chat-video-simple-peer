@@ -98,7 +98,7 @@ Ensure that both your client and server are running. Join a room using one brows
 - [ ] Add code to stop sharing;
 - [ ] Create a list of users with peer connection enabled;
 - [ ] Improve socket connection using Next API;
-- [ ] Probably I have more thing to do but I am tire, it is 1:32 am.... 😴
+- [x] Probably I have more thing to do but I am tired, it is 1:32 am.... 😴
 
 ## 🪲 Bugs
 
