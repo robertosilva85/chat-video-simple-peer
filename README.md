@@ -22,6 +22,10 @@ Chat Video Simple-Peer is a powerful video conferencing tool inspired by Google 
 
 ![image](https://github.com/robertosilva85/chat-video-simple-peer/assets/20528537/72b6e1de-2470-4794-8c40-814fe2beedb5)
 
+## Screen Sharing 
+
+![image](https://github.com/robertosilva85/chat-video-simple-peer/assets/20528537/d9e3afaf-3046-4282-8e62-b06a4302f75f)
+
 
 ## 🚀 Features
 
