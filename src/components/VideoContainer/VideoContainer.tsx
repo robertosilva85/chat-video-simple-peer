@@ -6,6 +6,7 @@ import usePeer from '@/hooks/usePeer';
 import { useEffect, useRef } from 'react';
 
 import { ActionContainer } from '../ActionContainer';
+import { SharingBox } from '../SharingBox';
 import { Video } from '../Video';
 import { VideoBox } from '../VideoBox';
 
@@ -26,7 +27,7 @@ export const VideoContainer = () => {
 
   const { checkAudio, destroy, isSpeaking } = useAudioAnalyze();
 
-  const { isAudioEnabled, isVideoEnabled } = roomConf;
+  const { isAudioEnabled, isVideoEnabled, isSharingScreen } = roomConf;
 
   useEffect(() => {
     return () => destroy();
@@ -60,30 +61,14 @@ export const VideoContainer = () => {
 
   return (
     <div className='flex-1 flex flex-col'>
-      {!!currentScreenStream && (
-        <div className='flex flex-col items-center justify-center mt-3 rounded-lg p-5 aspect-video max-h-[calc(100vh-170px)]'>
-          <div className='relative w-full h-full flex justify-center items-center'>
-            <div className='absolute top-0 p-4 bg-gray-700 w-full flex justify-between items-center rounded-md'>
-              <p className='text-white text-sm'>{name} is screen sharing</p>{' '}
-              <button
-                type='button'
-                className='bg-blue-500 text-white hover:bg-blue-600 rounded-sm py-1 px-10 text-sm z-30'
-              >
-                Stop Sharing
-              </button>
-            </div>
-            <div className='pt-16'>
-              <Video
-                isAudioEnabled
-                isVideoEnabled
-                videoRef={videoShareScreenRef}
-                isMirrorEnabled={false}
-              />
-            </div>
-          </div>
-        </div>
+      {isSharingScreen && (
+        <SharingBox
+          videoRef={videoShareScreenRef}
+          name='Roberto'
+          onStop={() => console.log('Not Implemented')}
+        />
       )}
-      {!currentScreenStream && (
+      {!isSharingScreen && (
         <VideoBox
           isAudioEnabled={isAudioEnabled}
           isVideoEnabled={isVideoEnabled}
